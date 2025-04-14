@@ -2,7 +2,7 @@
 #include <KeyboardDevice.h>
 #include <BleCompositeHID.h>
 
-BleCompositeHID compositeHID("ESP32 LED Keyboard", "Mystfit", 100);
+BleCompositeHID compositeHID("HID", "hid", 100);
 KeyboardDevice* keyboard;
 
 void OnLEDEvent(KeyboardOutputReport data){
@@ -31,23 +31,23 @@ void setup()
 
 void loop()
 {
-    keyboard->keyPress(KEY_NUMLOCK);
-    delay(10);
-    keyboard->keyRelease(KEY_NUMLOCK);
-    delay(1000);
+    // keyboard->keyPress(KEY_NUMLOCK);
+    // delay(10);
+    // keyboard->keyRelease(KEY_NUMLOCK);
+    // delay(1000);
 
-    keyboard->keyPress(KEY_CAPSLOCK);
-    delay(10);
-    keyboard->keyRelease(KEY_CAPSLOCK);
-    delay(1000);
+    // keyboard->keyPress(KEY_CAPSLOCK);
+    // delay(10);
+    // keyboard->keyRelease(KEY_CAPSLOCK);
+    // delay(1000);
 
-    keyboard->keyPress(KEY_SCROLLLOCK);
-    delay(10);
-    keyboard->keyRelease(KEY_SCROLLLOCK);
-    delay(1000);
+    // keyboard->keyPress(KEY_SCROLLLOCK);
+    // delay(10);
+    // keyboard->keyRelease(KEY_SCROLLLOCK);
+    // delay(1000);
 
-    keyboard->keyPress(KEY_COMPOSE);
-    delay(10);
-    keyboard->keyRelease(KEY_COMPOSE);
-    delay(1000);
+    // keyboard->keyPress(KEY_COMPOSE);
+    // delay(10);
+    // keyboard->keyRelease(KEY_COMPOSE);
+    // delay(1000);
 }

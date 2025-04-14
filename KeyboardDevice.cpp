@@ -1,6 +1,9 @@
 #include "KeyboardDevice.h"
 #include "KeyboardDescriptors.h"
 #include "BleCompositeHID.h"
+#include <Arduino.h>
+#include <iostream>
+#include <string>
 
 #if defined(CONFIG_ARDUHAL_ESP_LOG)
 #include "esp32-hal-log.h"
@@ -18,20 +21,25 @@ KeyboardCallbacks::KeyboardCallbacks(KeyboardDevice* device) :
 void KeyboardCallbacks::onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
 {
     KeyboardOutputReport ledReport = pCharacteristic->getValue<uint8_t>();
-    ESP_LOGD(LOG_TAG, "KeyboardDevice::onWrite - LED Report: %d", ledReport);
-    _device->onLED.fire(ledReport);
+    //std::string s(pCharacteristic->getValue(), sizeof(8));
+    ESP_LOGD(LOG_TAG, "value: %d", pCharacteristic->getValue<uint64_t>());
+
+    //_device->onLED.fire(ledReport);
 }
 
 void KeyboardCallbacks::onRead(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo)
 {
+    ESP_LOGD(LOG_TAG, "KeyboardDevice::onRead");
 }
 
 void KeyboardCallbacks::onSubscribe(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo, uint16_t subValue)
 {
+    ESP_LOGD(LOG_TAG, "KeyboardDevice::onSubscribe");
 }
 
 void KeyboardCallbacks::onStatus(NimBLECharacteristic* pCharacteristic, int code)
 {
+    ESP_LOGD(LOG_TAG, "KeyboardDevice::onStatus");
 }
 
 KeyboardDevice::KeyboardDevice() :
