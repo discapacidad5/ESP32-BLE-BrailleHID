@@ -31,23 +31,23 @@ void setup()
 
 void loop()
 {
-    // keyboard->keyPress(KEY_NUMLOCK);
-    // delay(10);
-    // keyboard->keyRelease(KEY_NUMLOCK);
-    // delay(1000);
+    keyboard->keyPress(KEY_NUMLOCK);
+    delay(10);
+    keyboard->keyRelease(KEY_NUMLOCK);
+    delay(1000);
 
-    // keyboard->keyPress(KEY_CAPSLOCK);
-    // delay(10);
-    // keyboard->keyRelease(KEY_CAPSLOCK);
-    // delay(1000);
+    keyboard->keyPress(KEY_CAPSLOCK);
+    delay(10);
+    keyboard->keyRelease(KEY_CAPSLOCK);
+    delay(1000);
 
-    // keyboard->keyPress(KEY_SCROLLLOCK);
-    // delay(10);
-    // keyboard->keyRelease(KEY_SCROLLLOCK);
-    // delay(1000);
+    keyboard->keyPress(KEY_SCROLLLOCK);
+    delay(10);
+    keyboard->keyRelease(KEY_SCROLLLOCK);
+    delay(1000);
 
-    // keyboard->keyPress(KEY_COMPOSE);
-    // delay(10);
-    // keyboard->keyRelease(KEY_COMPOSE);
-    // delay(1000);
+    keyboard->keyPress(KEY_COMPOSE);
+    delay(10);
+    keyboard->keyRelease(KEY_COMPOSE);
+    delay(1000);
 }

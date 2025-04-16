@@ -14,6 +14,15 @@ Published under the MIT license. Please see license.txt.
 ## Optional dependencies
  - Keypad 
  - Bounce2
+
+ ## Braille display features
+
+ - [x] Identify as a 40 cell 8 Dot braille display
+ - [x] Receive data from the device in an output report
+ - [x] Compatible with VoiceOver
+ - [x] Compatible with NVDA
+ - [ ] Compatible with TalkBack
+ - [ ] Properly read and interpret the data
    
 ## XInput gamepad features
 
@@ -59,85 +68,39 @@ Published under the MIT license. Please see license.txt.
 - (Make sure your IDE of choice has support for ESP32 boards available. [Instructions can be found here.](https://github.com/espressif/arduino-esp32#installation-instructions))
 - Download the zip version of this library from Github using either the "Code" -> "Download Zip" button or by cloning this repository to your Arduino library folder. If using the downloaded zip method, in the Arduino IDE go to "Sketch" -> "Include Library" -> "Add .ZIP Library..." and select the file you just downloaded.
 - Repeat the previous step but for the [NimBLE library](https://github.com/h2zero/NimBLE-Arduino)
+   - If you are using the Arduino IDE, you can use the included NimBLE library installed from the library manager
 - Using the Arduino IDE Library manager, download the "Callback" library by Tom Stewart.
 - In the Arduino IDE, you can now go to "File" -> "Examples" -> "ESP32-BLE-CompositeHID" and select an example to get started.
 
 ## Example
 
 ``` C++
+#include <Arduino.h>
+#include <BrailleDevice.h>
 #include <BleCompositeHID.h>
-#include <KeyboardDevice.h>
-#include <MouseDevice.h>
-#include <GamepadDevice.h>
 
-GamepadDevice gamepad;
-KeyboardDevice keyboard;
-MouseDevice mouse;
-BleCompositeHID compositeHID("CompositeHID Keyboard Mouse Gamepad", "Mystfit", 100);
+BleCompositeHID compositeHID("HID", "hid", 100);
+BrailleDevice* braille;
 
-void setup() {
+void setup()
+{
     Serial.begin(115200);
 
-     // Add all devices to the composite HID device to manage them
-    compositeHID.addDevice(&keyboard);
-    compositeHID.addDevice(&mouse);
-    compositeHID.addDevice(&gamepad);
+    braille = new BrailleDevice();
 
-    // Start the composite HID device to broadcast HID reports
+    compositeHID.addDevice(braille);
     compositeHID.begin();
 
+    Serial.println("Waiting for connection");
     delay(3000);
 }
 
-void loop() {
-  if(compositeHID.isConnected()){
-
-    // Test mouse by moving it in a circle
-    int startTime = millis();
-    int reportCount = 0;
-
-    int8_t lastX = 0;
-    int8_t lastY = 0;
-    bool gamepadPressed = false;
-
-    while(millis() - startTime < 8000){
-        reportCount++;
-        int8_t x = round(cos((float)millis() / 1000.0f) * 10.0f);
-        int8_t y = round(sin((float)millis() / 1000.0f) * 10.0f);
-        mouse->mouseMove(x, y);
-
-        // Test keyboard presses
-        if(reportCount % 100 == 0){
-            keyboard->keyPress(KEY_A);
-            keyboard->keyRelease(KEY_A);
-        }
-
-        // Test gamepad button presses
-        if(reportCount % 100 == 0){
-            gamepadPressed = !gamepadPressed;
-            if(gamepadPressed)
-                gamepad->press(BUTTON_1);
-            else
-                gamepad->release(BUTTON_1);
-        }
-        
-        delay(16);
-    }
-  }
+void loop()
+{
+    // do nothing
 }
 
 ```
-By default, reports are sent on every button press/release or axis/slider/hat/simulation movement, however this can be disabled, and then you manually call sendReport on each device instance as shown in the IndividualAxes.ino example.
-
-VID and PID values can be set. See TestAll.ino for example.
-
-There is also Bluetooth specific information that you can use (optional):
-
-Instead of `BleCompositeHID bleCompositeHID;` you can do `BleCompositeHID bleCompositeHID("Bluetooth Device Name", "Bluetooth Device Manufacturer", 100);`.
-The third parameter is the initial battery level of your device.
-By default the battery level will be set to 100%, the device name will be `Composite HID` and the manufacturer will be `Espressif`.
-
-The battery level can be set during operation by calling, for example, `bleCompositeHID.setBatteryLevel(80);`
 
 ## Credits for ESP32-BLE-CompositeHID
 
